@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: missing-budget-asks-first
+expected_outcome: |
+  Intake before searching: asks for the budget, move-in date and the commute details it needs, in one short round, without inventing a budget or move-in date.

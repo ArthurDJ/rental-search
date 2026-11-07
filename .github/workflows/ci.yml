@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# The checks only read the repository.
+permissions:
+  contents: read
+
+# A newer push to the same branch makes the older run irrelevant.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: checks
+    runs-on: ubuntu-latest
+    # Both scripts finish in about a second; anything longer is stuck.
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+
+      # Both scripts use only the standard library, so there is nothing to
+      # install and no dependency cache.
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.13'
+
+      # English and Chinese skills, and the three READMEs: same heading
+      # structure, same numbers per section, cross-references that resolve.
+      - name: Parity (en / zh)
+        run: python scripts/check_parity.py
+
+      # SKILL.md frontmatter against the Agent Skills spec, file references,
+      # marketplace.json, versions, and the evals layout. See the docstring
+      # at the top of the script for the full list.
+      - name: Skills, marketplace and evals
+        run: python scripts/validate_skills.py

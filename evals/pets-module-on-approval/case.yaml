@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: pets-module-on-approval
+expected_outcome: |
+  Pets module: treats 'negotiable' as to confirm, rules out the 20 lb limit and no-pets listings, accepts the cats-and-dogs listing while noting the pet deposit, and suggests asking about breed or size limits.

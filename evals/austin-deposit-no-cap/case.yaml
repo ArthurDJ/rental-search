@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: austin-deposit-no-cap
+expected_outcome: |
+  Applies Texas rules: no statutory cap on the deposit amount, refund within 30 days after move-out with a written forwarding address; explains that California's cap does not apply in Texas.

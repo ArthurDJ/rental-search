@@ -1,0 +1,289 @@
+<title>__TITLE__</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Layout: criteria strip, the top picks, then one sortable ledger with a commute ruler per listing.
+   Written to be published as a Claude artifact (no doctype or html/head/body tags) or opened locally. */
+:root {
+  --bg: #eef3f3; --surface: #ffffff; --fg: #142429; --muted: #56696d; --line: #d3dfe0;
+  --accent: #0d6b70; --accent-soft: #d8ecec; --warm: #a85a17; --warm-soft: #f6e6d6;
+  --ok: #26734a; --ok-soft: #dcefe3; --bad: #b3261e; --bad-soft: #f7dedb;
+  --track: #e2eaeb; --range: #0d6b70; --range-over: #b3261e;
+  --display: "Noto Serif SC", "Georgia", "Songti SC", serif;
+  --body: "Noto Sans SC", "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Consolas", monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1719; --surface: #152125; --fg: #e3eeef; --muted: #93a8ab; --line: #263a3e;
+    --accent: #55b9bb; --accent-soft: #173739; --warm: #e39a58; --warm-soft: #3a2a1c;
+    --ok: #6cc590; --ok-soft: #173326; --bad: #ef7f76; --bad-soft: #3b1f1d;
+    --track: #213236; --range: #55b9bb; --range-over: #ef7f76; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1719; --surface: #152125; --fg: #e3eeef; --muted: #93a8ab; --line: #263a3e;
+  --accent: #55b9bb; --accent-soft: #173739; --warm: #e39a58; --warm-soft: #3a2a1c;
+  --ok: #6cc590; --ok-soft: #173326; --bad: #ef7f76; --bad-soft: #3b1f1d;
+  --track: #213236; --range: #55b9bb; --range-over: #ef7f76; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.6; }
+.wrap { max-width: 1320px; margin: 0 auto; padding-block: 28px 56px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 36px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(28px, 4.4vw, 44px); font-weight: 900; line-height: 1.2; }
+h2 { font-size: 22px; font-weight: 600; }
+.eyebrow { font-size: 12px; letter-spacing: .1em; color: var(--accent); font-weight: 700; text-transform: uppercase; }
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.meta { font-size: 12px; color: var(--muted); }
+.unk { color: var(--muted); }
+.nowrap { white-space: nowrap; }
+
+.criteria { margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.criteria div { background: var(--surface); padding: 12px 16px; display: grid; gap: 2px; min-width: 0; }
+.criteria dt { font-size: 12px; color: var(--muted); }
+.criteria dd { margin: 0; font-weight: 700; overflow-wrap: anywhere; }
+
+.picks { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 16px; }
+.pick { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.pick .rank { font-family: var(--display); font-weight: 900; font-size: 30px; color: var(--accent); line-height: 1; }
+.pick h3 { font-size: 17px; font-family: var(--body); font-weight: 700; }
+.pick .price { font-size: 22px; font-weight: 600; }
+.pick ul { margin: 0; padding-left: 18px; display: grid; gap: 3px; font-size: 14px; }
+.pick .ask { font-size: 13px; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 8px; }
+
+.controls { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
+.tabs { display: flex; gap: 4px; background: var(--track); padding: 4px; border-radius: 10px; flex-wrap: wrap; }
+.tabs button { border: 0; background: transparent; color: var(--fg); font: inherit; font-size: 14px; padding: 6px 14px; border-radius: 7px; cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--surface); font-weight: 700; box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.tabs .count { font-family: var(--mono); color: var(--muted); margin-left: 4px; font-size: 12px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-size: 14px; }
+.filters label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; }
+.filters select { font: inherit; font-size: 14px; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12px; color: var(--muted); align-items: center; }
+.legend svg { vertical-align: middle; }
+
+.ledger { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+table { border-collapse: collapse; width: 100%; min-width: 1180px; font-size: 14px; table-layout: fixed; }
+col.c-n { width: 46px; } col.c-name { width: 230px; } col.c-rent { width: 140px; } col.c-type { width: 110px; }
+col.c-ruler { width: 172px; } col.c-furn { width: 150px; } col.c-det { width: 240px; } col.c-note { width: auto; }
+th, td { text-align: left; vertical-align: top; padding: 11px 12px; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+td:first-child { white-space: nowrap; overflow-wrap: normal; }
+th { font-size: 12px; color: var(--muted); font-weight: 500; letter-spacing: .04em; background: var(--surface); }
+tbody tr:last-child td { border-bottom: 0; }
+td.name strong { display: block; font-weight: 700; }
+.badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px; margin-right: 4px; vertical-align: 1px; white-space: nowrap; }
+.badge.new { background: var(--warm-soft); color: var(--warm); }
+.badge.meets { background: var(--ok-soft); color: var(--ok); }
+.badge.confirm { background: var(--warm-soft); color: var(--warm); }
+.badge.fails, .badge.gone, .badge.excluded { background: var(--bad-soft); color: var(--bad); }
+.rent .num { font-size: 16px; font-weight: 600; }
+.diff { font-size: 12px; font-family: var(--mono); }
+.diff.up { color: var(--bad); } .diff.down { color: var(--ok); }
+.ruler svg { display: block; width: 150px; height: 18px; overflow: visible; }
+.ruler .lab { font-size: 12px; font-family: var(--mono); }
+.ruler .lab.over { color: var(--bad); font-weight: 600; }
+.details { display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; font-size: 13px; margin: 0; }
+.details dt { color: var(--muted); white-space: nowrap; }
+.details dd { margin: 0; min-width: 0; }
+td.note { color: var(--muted); font-size: 13px; }
+.empty { padding: 24px; color: var(--muted); text-align: center; }
+
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+.cols section { display: grid; gap: 10px; align-content: start; min-width: 0; }
+.cols ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; font-size: 14px; }
+footer { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; }
+
+@media (max-width: 640px) {
+  table { min-width: 0; }
+  colgroup, thead { display: none; }
+  table, tbody, tr, td { display: block; width: 100%; }
+  tr { border-bottom: 1px solid var(--line); padding: 10px 0; }
+  td { border: 0; padding: 4px 14px; }
+  td[data-label]::before { content: attr(data-label) " "; color: var(--muted); font-size: 12px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header style="display:grid;gap:14px">
+    <div class="eyebrow" id="eyebrow"></div>
+    <h1 id="title"></h1>
+    <dl class="criteria" id="criteria"></dl>
+  </header>
+  <section style="display:grid;gap:16px" id="picks-sec" hidden>
+    <h2 id="picks-h"></h2>
+    <div class="picks" id="picks"></div>
+  </section>
+  <section style="display:grid;gap:14px">
+    <h2 id="all-h"></h2>
+    <div class="controls">
+      <div class="tabs" role="tablist" id="tabs"></div>
+      <div class="filters" id="filters">
+        <label for="f-type"><span id="l-type"></span> <select id="f-type"></select></label>
+        <label for="f-sort"><span id="l-sort"></span> <select id="f-sort"></select></label>
+        <label for="f-ok"><input type="checkbox" id="f-ok"> <span id="l-ok"></span></label>
+        <label for="f-new"><input type="checkbox" id="f-new"> <span id="l-new"></span></label>
+        <label for="f-fails"><input type="checkbox" id="f-fails"> <span id="l-fails"></span></label>
+      </div>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="ledger" id="ledger"></div>
+  </section>
+  <div class="cols" id="cols"></div>
+  <footer id="footer"></footer>
+</div>
+
+<script>
+const D = __DATA__;
+const L = D.labels, M = D.meta;
+document.documentElement.lang = "__LANG__";
+const LIMIT = M.commute_limit_min || null;
+const MAXMIN = Math.max(35, LIMIT ? LIMIT + 15 : 0, ...D.listings.map(r => r.commute_max || 0));
+const BUDGET = M.budget_target || null;
+const CAP = D.budget_cap;
+const state = { tab: null, type: "all", sort: "rank", ok: false, onlyNew: false, hideFails: false };
+const KEY = "rental-search:" + (M.title || "");
+try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s) Object.assign(state, s); } catch (e) {}
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const money = n => (n == null ? "" : "$" + Number(n).toLocaleString("en-US"));
+const val = v => (v == null || v === "" ? `<span class="unk">${esc(L.not_stated)}</span>` : esc(v === true ? L.yes : v === false ? L.no : v));
+const byId = Object.fromEntries(D.listings.map((r, i) => [r.id, { ...r, rank: i + 1 }]));
+const ACTIVE = new Set(["meets", "confirm", "fails"]);
+
+const active = D.listings.map((r, i) => ({ ...r, rank: i + 1 })).filter(r => ACTIVE.has(r.status));
+const closed = D.listings.filter(r => !ACTIVE.has(r.status));
+const TABS = CAP
+  ? [{ id: "in", label: L.in_budget, rows: active.filter(r => r.rent == null || r.rent <= CAP) },
+     { id: "over", label: L.over_budget, rows: active.filter(r => r.rent != null && r.rent > CAP) }]
+  : [{ id: "active", label: L.active, rows: active }];
+TABS.push({ id: "closed", label: L.gone_excluded, rows: closed });
+if (!TABS.some(t => t.id === state.tab)) state.tab = TABS[0].id;
+
+function header() {
+  document.title = M.title || document.title;
+  document.getElementById("eyebrow").textContent = [M.checked_at && `${L.checked} ${M.checked_at}`, M.currency].filter(Boolean).join(" · ");
+  document.getElementById("title").textContent = M.title || "";
+  const items = [
+    [L.budget, BUDGET ? `${money(BUDGET)}${M.budget_max ? "–" + money(M.budget_max) : ""} ${L.per_month}` : null],
+    [L.move_in, M.move_in],
+    [L.commute, M.commute_anchor ? `${M.commute_anchor}${LIMIT ? ` ≤ ${LIMIT} ${L.minutes}` : ""}` : null],
+    [L.commute_basis, M.commute_basis],
+    [L.household, M.household],
+  ].filter(([, v]) => v);
+  document.getElementById("criteria").innerHTML = items.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
+  document.getElementById("criteria").hidden = !items.length;
+}
+function picks() {
+  const ps = D.picks.filter(p => byId[p.id]);
+  if (!ps.length) return;
+  document.getElementById("picks-sec").hidden = false;
+  document.getElementById("picks-h").textContent = L.picks;
+  document.getElementById("picks").innerHTML = ps.map((p, i) => {
+    const r = byId[p.id];
+    return `<article class="pick"><div class="rank">${i + 1}</div><h3>${esc(r.name)}</h3>
+      <div class="price num">${money(r.rent)}${r.true_cost && r.true_cost !== r.rent ? ` <span class="meta">${esc(L.col_true_cost)} ${money(r.true_cost)}</span>` : ""}</div>
+      ${(p.reasons || []).length ? `<ul>${p.reasons.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+      <div class="ask">${p.ask ? `${esc(L.ask)}: ${esc(p.ask)}<br>` : ""}${r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(L.open_listing)}</a> · ` : ""}${esc(r.source || "")}</div></article>`;
+  }).join("");
+}
+function ruler(r) {
+  if (r.commute_min == null) return `<span class="meta">${esc(L.not_measured)}</span>`;
+  const hi = r.commute_max ?? r.commute_min, W = 150, x = m => Math.min(m, MAXMIN) / MAXMIN * W;
+  const over = LIMIT != null && hi > LIMIT;
+  const x1 = x(r.commute_min), x2 = Math.max(x(hi), x1 + 6);
+  const lab = r.commute_min === hi ? `${hi} ${L.minutes}` : `${r.commute_min}–${hi} ${L.minutes}`;
+  const limitLine = LIMIT != null ? `<line x1="${x(LIMIT)}" y1="1" x2="${x(LIMIT)}" y2="17" stroke="var(--fg)" stroke-width="1" stroke-dasharray="2 2"/>` : "";
+  return `<svg viewBox="0 0 ${W} 18" role="img" aria-label="${esc(L.col_commute)} ${esc(lab)}"><rect x="0" y="7" width="${W}" height="4" rx="2" fill="var(--track)"/><rect x="${x1}" y="5" width="${x2 - x1}" height="8" rx="4" fill="${over ? "var(--range-over)" : "var(--range)"}"/>${limitLine}</svg><div class="lab${over ? " over" : ""}">${esc(lab)}</div>`;
+}
+function controls() {
+  const opt = (v, t) => `<option value="${v}">${esc(t)}</option>`;
+  document.getElementById("l-type").textContent = L.f_type;
+  document.getElementById("f-type").innerHTML = opt("all", L.f_all) + opt("studio", L.f_studio) + opt("bed", L.f_bed);
+  document.getElementById("l-sort").textContent = L.f_sort;
+  document.getElementById("f-sort").innerHTML = opt("rank", L.s_rank) + opt("rent", L.s_rent) + opt("cost", L.s_cost) + opt("commute", L.s_commute);
+  document.getElementById("l-ok").textContent = L.f_ok;
+  document.getElementById("l-new").textContent = L.f_new;
+  document.getElementById("l-fails").textContent = L.f_hide_fails;
+  document.getElementById("f-ok").parentElement.hidden = LIMIT == null;
+  document.getElementById("all-h").textContent = L.all_listings;
+  const leg = [];
+  if (D.listings.some(r => r.commute_min != null)) {
+    const sx = m => m / MAXMIN * 60;
+    leg.push(`<span><svg width="60" height="12" aria-hidden="true"><rect x="0" y="4" width="60" height="4" rx="2" fill="var(--track)"/><rect x="${sx(5)}" y="3" width="${sx(10)}" height="6" rx="3" fill="var(--range)"/>${LIMIT ? `<line x1="${sx(LIMIT)}" y1="0" x2="${sx(LIMIT)}" y2="12" stroke="var(--fg)" stroke-dasharray="2 2"/>` : ""}</svg> ${esc(L.legend_range.replace("{max}", MAXMIN).replace("{limit}", LIMIT ?? "–"))}</span>`);
+    if (LIMIT) leg.push(`<span><svg width="24" height="12" aria-hidden="true"><rect x="2" y="3" width="20" height="6" rx="3" fill="var(--range-over)"/></svg> ${esc(L.legend_over)}</span>`);
+  }
+  document.getElementById("legend").innerHTML = leg.join("");
+}
+function tabs() {
+  document.getElementById("tabs").innerHTML = TABS.map(t => `<button role="tab" aria-selected="${state.tab === t.id}" data-tab="${t.id}">${esc(t.label)}<span class="count">${t.rows.length}</span></button>`).join("");
+}
+function table() {
+  const tab = TABS.find(t => t.id === state.tab), host = document.getElementById("ledger");
+  const isClosed = tab.id === "closed";
+  document.getElementById("filters").style.visibility = isClosed ? "hidden" : "visible";
+  document.getElementById("legend").style.visibility = isClosed ? "hidden" : "visible";
+  if (isClosed) {
+    host.innerHTML = tab.rows.length ? `<table style="min-width:640px;table-layout:auto"><thead><tr><th>${esc(L.col_name)}</th><th>${esc(L.col_rent)}</th><th>${esc(L.col_status)}</th><th>${esc(L.col_reason)}</th></tr></thead><tbody>${tab.rows.map(r => `<tr><td class="name"><strong>${esc(r.name)}</strong><span class="meta">${esc(r.source || "")}${r.url ? ` · <a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(L.open_listing)}</a>` : ""}</span></td><td data-label="${esc(L.col_rent)}" class="num">${money(r.rent)}</td><td data-label="${esc(L.col_status)}"><span class="badge ${r.status}">${esc(L["status_" + r.status])}</span></td><td data-label="${esc(L.col_reason)}" class="note">${esc(r.reason)}</td></tr>`).join("")}</tbody></table>` : `<div class="empty">${esc(L.empty)}</div>`;
+    return;
+  }
+  let rows = tab.rows.slice();
+  if (state.type === "studio") rows = rows.filter(r => r.bedrooms === 0);
+  if (state.type === "bed") rows = rows.filter(r => r.bedrooms == null || r.bedrooms >= 1);
+  if (state.ok && LIMIT != null) rows = rows.filter(r => r.commute_min != null && (r.commute_max ?? r.commute_min) <= LIMIT);
+  if (state.onlyNew) rows = rows.filter(r => r.is_new);
+  if (state.hideFails) rows = rows.filter(r => r.status !== "fails");
+  const big = 1e9;
+  if (state.sort === "rent") rows.sort((a, b) => (a.rent ?? big) - (b.rent ?? big));
+  if (state.sort === "cost") rows.sort((a, b) => (a.true_cost ?? a.rent ?? big) - (b.true_cost ?? b.rent ?? big));
+  if (state.sort === "commute") rows.sort((a, b) => ((a.commute_max ?? a.commute_min) ?? big) - ((b.commute_max ?? b.commute_min) ?? big));
+  if (!rows.length) { host.innerHTML = `<div class="empty">${esc(L.empty)}</div>`; return; }
+  const extra = M.extra_columns || [];
+  const details = r => `<dl class="details">${[[L.move_in, r.move_in], [L.col_laundry, r.laundry], [L.col_parking, r.parking], [L.col_utilities, r.utilities], [L.col_lease, r.lease], ...extra.map(c => [c.label, (r.extra || {})[c.key]])].map(([k, v]) => `<dt>${esc(k)}</dt><dd>${val(v)}</dd>`).join("")}</dl>`;
+  host.innerHTML = `<table><colgroup><col class="c-n"><col class="c-name"><col class="c-rent"><col class="c-type"><col class="c-ruler"><col class="c-furn"><col class="c-det"><col class="c-note"></colgroup>
+  <thead><tr><th>${esc(L.col_n)}</th><th>${esc(L.col_name)}</th><th>${esc(L.col_rent)}</th><th>${esc(L.col_type)}</th><th>${esc(L.col_commute)}</th><th>${esc(L.col_furnished)}</th><th>${esc(L.col_details)}</th><th>${esc(L.col_note)}</th></tr></thead>
+  <tbody>${rows.map(r => {
+    const d = BUDGET && r.rent != null ? r.rent - BUDGET : null;
+    const diff = d ? `<div class="diff ${d > 0 ? "up" : "down"}">${d > 0 ? "+" : "−"}${money(Math.abs(d))} ${esc(L.vs_budget)}</div>` : "";
+    const cost = r.true_cost != null && r.true_cost !== r.rent ? `<div class="meta">${esc(L.col_true_cost)} ${money(r.true_cost)}</div>` : "";
+    return `<tr>
+      <td data-label="${esc(L.col_n)}" class="num meta">${r.rank}</td>
+      <td class="name"><strong>${r.is_new ? `<span class="badge new">${esc(L.new)}</span>` : ""}${esc(r.name)}</strong><span class="badge ${r.status}">${esc(L["status_" + r.status])}</span><span class="meta">${esc(r.source || "")}${r.url ? ` · <a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(L.open_listing)}</a>` : ""}</span></td>
+      <td data-label="${esc(L.col_rent)}"><span class="rent"><span class="num">${r.rent != null ? money(r.rent) : val(null)}</span></span>${r.rent_note ? `<div class="meta">${esc(r.rent_note)}</div>` : ""}${cost}${diff}</td>
+      <td data-label="${esc(L.col_type)}">${val(r.unit_type)}${r.size_sqft ? `<div class="meta num">${r.size_sqft} ${esc(L.sqft)}</div>` : ""}</td>
+      <td class="ruler" data-label="${esc(L.col_commute)}">${ruler(r)}</td>
+      <td data-label="${esc(L.col_furnished)}">${val(r.furnished)}</td>
+      <td data-label="${esc(L.col_details)}">${details(r)}</td>
+      <td data-label="${esc(L.col_note)}" class="note">${esc([r.note, r.reason].filter(Boolean).join(" · "))}</td>
+    </tr>`;
+  }).join("")}</tbody></table>`;
+}
+function footer() {
+  const blocks = [];
+  if ((M.method || []).length || (M.sites || []).length) blocks.push(`<section><h2>${esc(L.method)}</h2><ul>${(M.sites || []).length ? `<li>${esc(L.sites)}: ${esc(M.sites.join(", "))}</li>` : ""}${(M.method || []).map(x => `<li>${esc(x)}</li>`).join("")}</ul></section>`);
+  if ((M.notes || []).length) blocks.push(`<section><h2>${esc(L.notes)}</h2><ul>${M.notes.map(x => `<li>${esc(x)}</li>`).join("")}</ul></section>`);
+  document.getElementById("cols").innerHTML = blocks.join("");
+  document.getElementById("footer").textContent = L.footer;
+}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+function sync() {
+  document.getElementById("f-type").value = state.type;
+  document.getElementById("f-sort").value = state.sort;
+  document.getElementById("f-ok").checked = state.ok;
+  document.getElementById("f-new").checked = state.onlyNew;
+  document.getElementById("f-fails").checked = state.hideFails;
+  tabs(); table();
+}
+header(); picks(); controls(); footer();
+document.getElementById("tabs").addEventListener("click", e => { const b = e.target.closest("button[data-tab]"); if (!b) return; state.tab = b.dataset.tab; save(); sync(); });
+[["f-type", "type", "value"], ["f-sort", "sort", "value"], ["f-ok", "ok", "checked"], ["f-new", "onlyNew", "checked"], ["f-fails", "hideFails", "checked"]]
+  .forEach(([id, k, p]) => document.getElementById(id).addEventListener("change", e => { state[k] = e.target[p]; save(); table(); }));
+sync();
+</script>

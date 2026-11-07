@@ -1,0 +1,30 @@
+{
+  "name": "rental-search",
+  "owner": {
+    "name": "ArthurDJ"
+  },
+  "metadata": {
+    "description": "Rental search skill for Claude, in English and Chinese",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "rental-search",
+      "description": "Find and shortlist a rental home: searches listing sites in your browser, measures rush-hour commutes, true monthly cost, availability and scam checks, spreadsheet and web page. English instructions.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/rental-search"
+      ]
+    },
+    {
+      "name": "rental-search-zh",
+      "description": "Find and shortlist a rental home: searches listing sites in your browser, measures rush-hour commutes, true monthly cost, availability and scam checks, spreadsheet and web page. Chinese instructions.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/rental-search-zh"
+      ]
+    }
+  ]
+}

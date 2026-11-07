@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: landlord-message-draft-only
+expected_outcome: |
+  Drafts the message in English (the listing's language) for the user to send, explains it in Chinese, uses placeholders for contact details, and does not claim to have sent anything.

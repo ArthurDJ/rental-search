@@ -1,0 +1,65 @@
+name: Triggering problem
+description: The skill loaded when it should not have, or did not load when it should have.
+title: "[Trigger] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The description in each SKILL.md decides when the skill loads. The "What the skill does" and "What it will not do" sections of the README list the intended scope. Confirmed reports become queries in `evals/trigger-queries.json`.
+  - type: textarea
+    id: message
+    attributes:
+      label: The user message
+      description: The exact message that was sent, with personal details removed.
+      render: text
+    validations:
+      required: true
+  - type: dropdown
+    id: expected
+    attributes:
+      label: Expected
+      options:
+        - Should trigger
+        - Should not trigger
+    validations:
+      required: true
+  - type: textarea
+    id: happened
+    attributes:
+      label: What happened
+      description: Did the skill load? If another skill loaded instead, which one?
+    validations:
+      required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language version
+      options:
+        - en (rental-search)
+        - zh (rental-search-zh)
+        - Both installed
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Claude surface
+      options:
+        - Claude Code
+        - Claude.ai (web, desktop or mobile)
+        - Claude API
+        - Other agent (say which below)
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Skill version
+      description: "`version` under `metadata` in the SKILL.md frontmatter."
+      placeholder: 1.0.0
+  - type: textarea
+    id: context
+    attributes:
+      label: Anything else
+      description: Other skills installed, the model, earlier messages in the conversation.

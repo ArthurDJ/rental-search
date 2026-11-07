@@ -1,0 +1,40 @@
+{
+  "meta": {
+    "title": "Furnished rentals, Kelowna (sample)",
+    "language": "en",
+    "currency": "CAD",
+    "checked_at": "2026-11-06 21:00",
+    "budget_target": 1500,
+    "budget_max": null,
+    "commute_limit_min": 20,
+    "commute_anchor": "Downtown office",
+    "commute_basis": "Driving, Monday 08:15, Google Maps typical range",
+    "move_in": "around 2026-12-01",
+    "household": "2 adults",
+    "modules": ["furnished", "pets"],
+    "extra_columns": [{"key": "pets", "label": "Pets"}],
+    "sites": ["Kijiji", "Craigslist", "Facebook Marketplace", "liv.rent", "Zumper", "rentals.ca"],
+    "method": [
+      "Every listing opened on 2026-11-06; search cards were not counted.",
+      "Commutes measured in Google Maps, departing Monday 08:15, fastest route.",
+      "Castanet skipped: it showed a bot check."
+    ],
+    "notes": [
+      "Sample data for demonstrating the outputs. The listings, addresses and links are invented."
+    ]
+  },
+  "picks": [
+    {"id": "s1", "reasons": ["5 min to the office", "Furnished, in-suite laundry, garage parking"], "ask": "Exact address, move-in date, which utilities are included"},
+    {"id": "s2", "reasons": ["All utilities and one parking stall included", "Lowest true monthly cost for a 1 bedroom"], "ask": "Is it still available for December 1?"},
+    {"id": "s3", "reasons": ["Shortest lease minimum (1 month)", "4 min to the office"], "ask": "Price with furniture"}
+  ],
+  "listings": [
+    {"id": "s1", "name": "Downtown 1 bedroom, Ellis St", "status": "confirm", "rent": 1575, "true_cost": 1635, "true_cost_note": "electricity est. $60 (not stated)", "bedrooms": 1, "unit_type": "1 bed, 1 bath", "size_sqft": 760, "commute_min": 5, "commute_max": 5, "furnished": "Yes (checkbox only)", "laundry": "In-suite", "parking": "Garage", "utilities": null, "move_in": null, "lease": null, "extra": {"pets": "Cats and dogs OK"}, "is_new": true, "source": "Craigslist", "url": "https://example.com/listing/s1", "note": "Posted 2026-10-23; furnishing only in the checkbox"},
+    {"id": "s2", "name": "1 bedroom, Gordon Dr", "status": "meets", "rent": 1425, "rent_note": "All utilities included", "true_cost": 1425, "bedrooms": 1, "unit_type": "1 bed, 1.5 bath", "size_sqft": null, "commute_min": 8, "commute_max": 14, "furnished": "Fully furnished", "laundry": "In-suite, dishwasher", "parking": "1 stall included", "utilities": "All included", "move_in": "Available now", "lease": null, "extra": {"pets": "No pets"}, "is_new": false, "source": "Facebook Marketplace", "url": "https://example.com/listing/s2", "note": "Listed three weeks ago"},
+    {"id": "s3", "name": "1 bedroom, Bertram St", "status": "confirm", "rent": 1490, "rent_note": "Was $1,795", "true_cost": null, "bedrooms": 1, "unit_type": "1 bed, 1 bath", "size_sqft": 600, "commute_min": 4, "commute_max": 4, "furnished": "Optional, price not stated", "laundry": "In-suite", "parking": "1 stall included", "utilities": "Not included", "move_in": "Available now", "lease": "Minimum 1 month", "extra": {"pets": "On approval"}, "is_new": false, "source": "liv.rent", "url": "https://example.com/listing/s3", "note": "Price dropped $305"},
+    {"id": "s4", "name": "Studio, Rutland Rd", "status": "fails", "rent": 1225, "true_cost": 1285, "bedrooms": 0, "unit_type": "Studio (Murphy bed)", "size_sqft": 330, "commute_min": 12, "commute_max": 22, "furnished": "Yes", "laundry": "In-suite", "parking": "Surface stall", "utilities": null, "move_in": "2026-12-01", "lease": null, "extra": {"pets": null}, "is_new": true, "source": "Craigslist", "url": "https://example.com/listing/s4", "note": null, "reason": "Slowest commute 22 min, over the 20 min limit"},
+    {"id": "s5", "name": "2 bed 2 bath, Water St", "status": "confirm", "rent": 1975, "true_cost": 2100, "bedrooms": 2, "unit_type": "2 bed, 2 bath", "size_sqft": null, "commute_min": 4, "commute_max": 4, "furnished": "Checkbox says yes; description does not mention furniture", "laundry": "In-suite", "parking": "1 underground stall", "utilities": null, "move_in": "Available now", "lease": null, "extra": {"pets": null}, "is_new": true, "source": "Craigslist", "url": "https://example.com/listing/s5", "note": null},
+    {"id": "s6", "name": "1 bedroom, Bernard Ave", "status": "gone", "rent": 1850, "source": "Kijiji", "url": "https://example.com/listing/s6", "reason": "Kijiji shows No Longer Available (2026-11-06)"},
+    {"id": "s7", "name": "1 bedroom, lakeside tower", "status": "excluded", "rent": 1050, "source": "liv.rent", "url": "https://example.com/listing/s7", "reason": "Suspected scam: about half the building's usual rent, landlord ID unverified, asks to contact off-platform"}
+  ]
+}

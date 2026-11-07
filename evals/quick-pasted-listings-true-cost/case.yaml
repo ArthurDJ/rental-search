@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: quick-pasted-listings-true-cost
+expected_outcome: |
+  Quick mode: ranks the pasted listings using true monthly cost (rent plus utilities and parking), treats D as a suspected scam and keeps it out of the recommendations, labels commutes as not measured or estimated, notes what each listing does not state, and does not offer to contact landlords itself.

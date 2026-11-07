@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Agent Skills specification
+    url: https://agentskills.io/specification
+    about: Questions about the skill format itself rather than this skill.
+  - name: Using skills in Claude
+    url: https://support.claude.com/en/articles/12512180-using-skills-in-claude
+    about: Installing and turning on skills in Claude.ai, Claude Code and the API.

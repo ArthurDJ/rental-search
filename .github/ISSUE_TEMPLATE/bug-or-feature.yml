@@ -1,0 +1,38 @@
+name: Bug or feature request
+description: Something else that is wrong, missing or could be better.
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - Bug (wrong advice, broken output, a check that fails)
+        - Feature request
+        - Documentation
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened or what you would like
+      description: For wrong advice, include the prompt, the answer and what the right answer is.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How to reproduce
+      description: The prompt or steps, with personal details removed.
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language version
+      options:
+        - en (rental-search)
+        - zh (rental-search-zh)
+        - Both / not specific
+  - type: input
+    id: surface
+    attributes:
+      label: Claude surface and skill version
+      placeholder: Claude Code, 1.0.0

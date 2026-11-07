@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: toronto-deposit-and-fees
+expected_outcome: |
+  Applies Ontario rules: only a last-month rent deposit is allowed, damage and pet deposits and application fees are not, so the requests are red flags; advises against paying before a viewing; does not quote BC or US rules.

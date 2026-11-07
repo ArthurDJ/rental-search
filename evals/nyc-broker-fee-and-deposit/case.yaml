@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: nyc-broker-fee-and-deposit
+expected_outcome: |
+  Applies New York rules: the FARE Act bars a landlord's listing broker from charging the tenant, the deposit is capped at one month, and the credit check at $20; says what to do instead; no contacting anyone.

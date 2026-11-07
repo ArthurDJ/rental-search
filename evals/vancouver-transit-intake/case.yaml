@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: vancouver-transit-intake
+expected_outcome: |
+  Short intake: at most 5 question marks, asks for budget and move-in, plans to measure the commute by transit since there is no car, and asks whether nearby cities like Burnaby count.

@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: business-stay-receipts
+expected_outcome: |
+  Business-stay module: asks or checks for receipts or invoices, company payment or lease terms, a minimum stay that fits 3 months, internet and a work surface, and treats utilities included as a plus for reimbursement. Does not book or contact anyone.

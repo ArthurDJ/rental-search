@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: la-furnished-deposit
+expected_outcome: |
+  Applies California rules: deposit capped at one month (furnished no longer differs; the two-month small-landlord exception does not fit a management company), the landlord must accept a non-cash, non-electronic payment option, and Zelle-only is a scam signal.

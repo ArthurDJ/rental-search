@@ -1,0 +1,53 @@
+name: Rule out of date
+description: A site no longer behaves the way a region pack says, or a tenancy fact has changed.
+title: "[Rule] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Site rules live in the region packs (`references/regions-*.md`), each with a "Last checked" date. Tenancy facts need an **official** source (a government or tenancy-board page), not a blog or forum post. Remove any personal details (your name, address, the listings you looked at) before posting.
+  - type: dropdown
+    id: file
+    attributes:
+      label: Which file
+      description: Where the rule is written. The English and Chinese skills have the same files and both get fixed.
+      options:
+        - references/regions-canada-bc.md
+        - references/regions-other.md
+        - references/verification.md
+        - references/scoring.md
+        - references/intake.md
+        - references/outputs.md
+        - SKILL.md
+        - README
+    validations:
+      required: true
+  - type: input
+    id: site
+    attributes:
+      label: Site or rule
+      description: The site and the rule, quoted or named.
+      placeholder: 'Craigslist: "Open listings at https://www.craigslist.org/view/d/..."'
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: What happens now
+      description: What the skill says, and what the site (or the official source) does instead. A public search URL that shows it helps.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Official source URL (for tenancy facts)
+      placeholder: https://
+  - type: input
+    id: checked
+    attributes:
+      label: Date checked
+      description: When you saw it (YYYY-MM-DD).
+      placeholder: "2026-11-06"
+    validations:
+      required: true

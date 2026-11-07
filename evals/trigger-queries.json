@@ -1,0 +1,98 @@
+[
+  {
+    "query": "moving to kelowna in december with my wife, need a furnished 1 bedroom under $1,600 within 20 min of downtown. can you search kijiji, craigslist and facebook for us?",
+    "should_trigger": true
+  },
+  {
+    "query": "帮我在基隆拿找个带家具的一室一厅，预算1500加元左右，12月1号入住，离市中心开车20分钟以内",
+    "should_trigger": true
+  },
+  {
+    "query": "I pasted 6 listings from Zumper below, which one has the lowest real monthly cost once you add utilities and parking?",
+    "should_trigger": true
+  },
+  {
+    "query": "is this craigslist rental a scam? $1,100 for a 2 bed in a luxury tower, landlord is overseas and wants an e-transfer deposit first",
+    "should_trigger": true
+  },
+  {
+    "query": "my company is relocating me to Vancouver for 4 months, I need a furnished place that can give receipts for reimbursement",
+    "should_trigger": true
+  },
+  {
+    "query": "we have a 60 lb dog and need a pet friendly furnished rental in Kelowna, can you check which listings actually allow big dogs",
+    "should_trigger": true
+  },
+  {
+    "query": "can you re-check last week's apartment shortlist and tell me which ones are still available",
+    "should_trigger": true
+  },
+  {
+    "query": "looking for a sublet near UBC Okanagan for Jan-Apr, furnished, under $1,200",
+    "should_trigger": true
+  },
+  {
+    "query": "find me a furnished 1BR in Austin near UT for 6 months, compare zillow and apartments.com",
+    "should_trigger": true
+  },
+  {
+    "query": "draft an email to the landlord of this furnished condo asking if it's still available for Dec 1",
+    "should_trigger": true
+  },
+  {
+    "query": "moving to Toronto in January, need a furnished 1 bed near a subway line under $2,600, landlord is asking for a damage deposit, is that ok?",
+    "should_trigger": true
+  },
+  {
+    "query": "help me compare 4 furnished studios I found on StreetEasy in Brooklyn, one wants a broker fee",
+    "should_trigger": true
+  },
+  {
+    "query": "what's the average rent for a 1 bedroom in Kelowna right now?",
+    "should_trigger": false
+  },
+  {
+    "query": "should I buy a condo in Kelowna or keep renting? here are my numbers",
+    "should_trigger": false
+  },
+  {
+    "query": "find me an Airbnb in Kelowna for 3 nights next weekend",
+    "should_trigger": false
+  },
+  {
+    "query": "my landlord is keeping my damage deposit, what can I do in BC?",
+    "should_trigger": false
+  },
+  {
+    "query": "we need 1,500 sq ft of office space downtown Kelowna for our startup",
+    "should_trigger": false
+  },
+  {
+    "query": "write a python scraper that downloads every Kijiji rental listing in Canada every hour",
+    "should_trigger": false
+  },
+  {
+    "query": "help me write a rental listing for my basement suite so it rents faster",
+    "should_trigger": false
+  },
+  {
+    "query": "review this lease agreement I already signed and tell me if the pet clause is legal",
+    "should_trigger": false
+  },
+  {
+    "query": "book a hotel near Kelowna airport for my flight on Friday",
+    "should_trigger": false
+  },
+  {
+    "query": "what are the best neighborhoods in Kelowna for families? just general info",
+    "should_trigger": false
+  },
+  {
+    "query": "how do I get a real estate salesperson license in New York?",
+    "should_trigger": false
+  },
+  {
+    "query": "what's the property tax rate on a condo I'm buying in Seattle?",
+    "should_trigger": false
+  }
+]

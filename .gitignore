@@ -1,0 +1,6 @@
+examples/out/
+.claude/
+_ref/
+__pycache__/
+*.pyc
+rental-search-workspace/

@@ -1,0 +1,4 @@
+schema_version: "1.1"
+name: us-city-no-pack
+expected_outcome: |
+  Says there is no pack for Denver or Colorado, proposes candidate US sites and asks the user to confirm them before searching, plans to look up Colorado rules on official pages, and does not apply another state's or province's rules.
